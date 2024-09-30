@@ -22,15 +22,15 @@ const Value = ({ label, value }: ValueProps) => {
 const styling = (theme: ThemeKey) =>
   StyleSheet.create({
     valueContainer: {
-      marginVertical: 10,
+      marginVertical: 5,
     },
     label: {
       color: Colors[theme]?.themeDisplay || Colors.light.themeDisplay,
       fontSize: 20,
     },
     value: {
-      fontSize: 35,
-      color: Colors[theme]?.themeDisplay2 || Colors.light.themeDisplay2,
+      fontSize: 25,
+      color: Colors[theme]?.themeDisplaySoft || Colors.light.themeDisplaySoft,
       fontWeight: "500",
     },
   });

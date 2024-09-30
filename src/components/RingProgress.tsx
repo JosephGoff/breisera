@@ -7,7 +7,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { Colors, commonColor } from '../constants/Colors';
+import { Colors } from '../constants/Colors';
+import { useRecoilValue } from 'recoil';
+import { themeValueState } from '../storage/themeValueStorage';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -28,6 +30,7 @@ const RingProgress = ({
   ringFillColor,
   showArrow = false
 }: RingProgressProps) => {
+  const themeValue = useRecoilValue(themeValueState);
   const innerRadius = radius - strokeWidth / 2;
   const circumference = 2 * Math.PI * innerRadius;
 
@@ -64,19 +67,19 @@ const RingProgress = ({
     >
       <SVG>
         <Circle {...circleDefaultProps} stroke={ringColor} opacity={0.2} />
-        {progress !== 0 && <AnimatedCircle animatedProps={animatedProps} stroke={ringFillColor} {...circleDefaultProps} />}
+        <AnimatedCircle animatedProps={animatedProps} stroke={ringFillColor} {...circleDefaultProps} />
       </SVG>
-      {showArrow && progress !== 0 && <AntDesign
+      {showArrow && <AntDesign
         name="arrowright"
-        size={strokeWidth * 0.8}
-        color="black"
+        size={strokeWidth * 0.6}
+        color={Colors[themeValue]?.themeColor || Colors.light.themeColor}
         style={{
           position: 'absolute',
           alignSelf: 'center',
-          top: strokeWidth * 0.1,
+          top: strokeWidth * 0.18,
         }}
       />}
-      {progress === 0 && <View style={{backgroundColor: ringFillColor, height: strokeWidth, width: 1, display: "flex", alignSelf: "center", position: "absolute", top: 0}}></View>}
+      {/* {progress === 0 && <View style={{backgroundColor: ringFillColor, height: strokeWidth, width: 1, display: "flex", alignSelf: "center", position: "absolute", top: 0}}></View>} */}
     </View>
   );
 };

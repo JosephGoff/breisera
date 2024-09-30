@@ -49,13 +49,13 @@ const styling = (theme: ThemeKey) =>
     headerContainer: {
       height: 50,
       width: "100%",
-      paddingHorizontal: 3,
+      paddingHorizontal: 10,
     },
     header: {
       height: "100%",
       width: "100%",
       backgroundColor:
-        Colors[theme]?.themeColorSoft || Colors.light.themeColorSoft,
+        Colors[theme]?.themeColorSoftBG || Colors.light.themeColorSoftBG,
       borderRadius: 10,
       display: "flex",
       flexDirection: "row",
@@ -64,7 +64,7 @@ const styling = (theme: ThemeKey) =>
     },
     headerRight: {
       backgroundColor:
-        Colors[theme]?.themeColorSoft2 || Colors.light.themeColorSoft2,
+        Colors[theme]?.themeColorSoft || Colors.light.themeColorSoft,
       borderRadius: 7,
       marginRight: 6,
       width: 110,

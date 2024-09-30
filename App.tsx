@@ -1,49 +1,38 @@
-// import { StatusBar } from "expo-status-bar";
-// import { StyleSheet, View } from "react-native";
-
-// import Health from "./src/screens/Health/Health";
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Health />
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "black",
-//     justifyContent: "center",
-//     padding: 12,
-//   },
-// });
-
-
-import React, {useCallback, useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import RootLayout from './src/navigation/RootLayout';
-import {save, get} from './src/storage/asyncStorage';
-import {RecoilRoot, useSetRecoilState} from 'recoil';
-import {themeValueState} from './src/storage/themeValueStorage';
+import React, { useCallback, useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import RootLayout from "./src/navigation/RootLayout";
+import { save, get } from "./src/storage/asyncStorage";
+import { RecoilRoot, useSetRecoilState } from "recoil";
+import { themeValueState } from "./src/storage/themeValueStorage";
+import { dayStatusState } from "./src/storage/dayStatusStorage";
 
 const App = () => {
+  // Set the theme state from async storage
   const setThemeValue = useSetRecoilState(themeValueState);
-
   const setAppTheme = useCallback(async () => {
-    const theme = await get('Theme');
+    const theme = await get("Theme");
     if (theme) {
-      save('Theme', theme);
-      save('IsDefault', true);
+      save("Theme", theme);
+      save("IsDefault", true);
       setThemeValue(theme);
     }
   }, [setThemeValue]);
-
   useEffect(() => {
     setAppTheme();
   }, [setAppTheme]);
+
+  // Set the day status state from async storage
+  const setDayStatusState = useSetRecoilState(dayStatusState);
+  const setAppDayStatusState = useCallback(async () => {
+    const dayStatusState = await get("dayStatusState");
+    if (dayStatusState) {
+      save("dayStatusState", dayStatusState);
+      setDayStatusState(dayStatusState);
+    }
+  }, [setDayStatusState]);
+  useEffect(() => {
+    setAppDayStatusState();
+  }, [setAppDayStatusState]);
 
   return (
     <NavigationContainer>

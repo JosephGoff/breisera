@@ -48,7 +48,7 @@ const RootLayout = () => {
             <RingProgress
               radius={14}
               strokeWidth={5}
-              progress={dayStatus.health}
+              progress={dayStatus.health.dayStatus}
               ringColor={
                 Colors[themeValue]?.successGreen || Colors.light.successGreen
               }
@@ -70,7 +70,7 @@ const RootLayout = () => {
             <RingProgress
               radius={14}
               strokeWidth={5}
-              progress={dayStatus.habits}
+              progress={dayStatus.habits.dayStatus}
               ringColor={
                 Colors[themeValue]?.successGreen || Colors.light.successGreen
               }
@@ -92,7 +92,7 @@ const RootLayout = () => {
             <RingProgress
               radius={14}
               strokeWidth={5}
-              progress={dayStatus.progress}
+              progress={dayStatus.progress.dayStatus}
               ringColor={
                 Colors[themeValue]?.successGreen || Colors.light.successGreen
               }
@@ -114,7 +114,7 @@ const RootLayout = () => {
             <RingProgress
               radius={14}
               strokeWidth={5}
-              progress={dayStatus.learning}
+              progress={dayStatus.learning.dayStatus}
               ringColor={
                 Colors[themeValue]?.successGreen || Colors.light.successGreen
               }
@@ -136,7 +136,7 @@ const RootLayout = () => {
             <RingProgress
               radius={14}
               strokeWidth={5}
-              progress={dayStatus.all}
+              progress={dayStatus.all.dayStatus}
               ringColor={
                 Colors[themeValue]?.successGreen || Colors.light.successGreen
               }

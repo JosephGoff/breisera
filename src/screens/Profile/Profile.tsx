@@ -1,42 +1,84 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {Colors} from '../../constants/Colors';
-import {useRecoilValue} from 'recoil';
-import {themeValueState} from '../../storage/themeValueStorage';
-import {ThemeKey} from '../../hooks/useAppTheme';
-import {useAppTheme} from '../../hooks/useAppTheme';
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { Colors } from "../../constants/Colors";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { themeValueState } from "../../storage/themeValueStorage";
+import { ThemeKey } from "../../hooks/useAppTheme";
+import { useAppTheme } from "../../hooks/useAppTheme";
+import { dayStatusState } from "../../storage/dayStatusStorage";
+import { save } from "../../storage/asyncStorage";
+import CheckboxWithLabel from "../../components/Checkbox";
 
 const Profile: React.FC = () => {
   const themeValue = useRecoilValue(themeValueState);
-  const {setAppTheme} = useAppTheme();
+  const { setAppTheme } = useAppTheme();
+  const [dayStatus, setDayStatus] = useRecoilState(dayStatusState);
   const styles = styling(themeValue);
 
+  const handleCheckboxChange = (isChecked: boolean, label: string) => {
+    // Set the global and async all status
+    if (dayStatus) {
+      const newCheckBoxes = dayStatus.all.checkboxes.map((item) =>
+        item.label === label ? { ...item, isChecked: isChecked } : item
+      );
+
+      const newDayStatus = {
+        ...dayStatus,
+        all: {
+          ...dayStatus.all,
+          checkboxes: newCheckBoxes,
+          dayStatus:
+            newCheckBoxes.filter((item) => item.isChecked).length /
+            newCheckBoxes.length,
+        },
+      };
+
+      setDayStatus(newDayStatus);
+      save("dayStatusState", newDayStatus);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.textStyle}>
-        This is a demo of default dark/light theme with switch/buttons using
-        async storage.
-      </Text>
-      <TextInput
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={{ paddingBottom: 50, flex: 1, alignItems: "center", paddingTop: 250, paddingHorizontal: 20}}>
+          {dayStatus.all.checkboxes.map((item, index) => (
+            <CheckboxWithLabel
+              key={index}
+              label={item.label}
+              onChange={handleCheckboxChange}
+              checked={item.isChecked}
+            />
+          ))}
+
+          {/* <TextInput
         style={styles.textInputStyle}
         placeholder="Type here"
         placeholderTextColor={Colors[themeValue]?.gray || Colors.light.gray}
-      />
-      <TouchableOpacity
-        style={styles.touchableStyle}
-        onPress={() => {
-          const newTheme = themeValue === 'dark' ? 'light' : 'dark';
-          setAppTheme(newTheme, false);
-        }}>
-        <Text style={styles.buttonTextStyle}>Button</Text>
-      </TouchableOpacity>
-    </View>
+      /> */}
+
+          <TouchableOpacity
+            style={styles.touchableStyle}
+            onPress={() => {
+              const newTheme = themeValue === "dark" ? "light" : "dark";
+              setAppTheme(newTheme, false);
+            }}
+          >
+            <Text style={styles.buttonTextStyle}>
+              {themeValue === "dark" ? "Light" : "Dark"} Mode
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -44,34 +86,23 @@ const styling = (theme: ThemeKey) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: "center",
       backgroundColor: Colors[theme]?.themeColor || Colors.light.themeColor,
-      paddingHorizontal: 20,
-    },
-    textStyle: {},
-    textInputStyle: {
-      borderColor: Colors[theme]?.gray || Colors.light.gray,
-      padding: 10,
-      borderWidth: 2,
-      borderRadius: 5,
-      width: '100%',
-      marginTop: 20,
-      color: Colors[theme]?.commonWhite || Colors.light.commonWhite,
     },
     touchableStyle: {
       backgroundColor: Colors[theme]?.sky || Colors.light.sky,
       padding: 10,
       borderRadius: 6,
-      width: '100%',
+      width: "100%",
       height: 57,
-      justifyContent: 'center',
+      justifyContent: "center",
       marginTop: 20,
     },
     buttonTextStyle: {
-      textAlign: 'center',
+      textAlign: "center",
       color: Colors[theme]?.commonWhite || Colors.light.commonWhite,
       fontSize: 20,
-      fontWeight: '500',
+      fontWeight: "500",
     },
   });
 
