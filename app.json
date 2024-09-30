@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "StepCounter",
-    "slug": "StepCounter",
+    "name": "breisera",
+    "slug": "breisera",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.josephgoff.stepcounter"
+      "bundleIdentifier": "com.josephgoff.breisera"
     },
     "android": {
       "adaptiveIcon": {
