@@ -1,84 +1,68 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Value from './src/components/Value';
-import RingProgress from './src/components/RingProgress';
-import { useState } from 'react';
-import useHealthData from './src/hooks/useHealthData'
-import { AntDesign } from '@expo/vector-icons';
+// import { StatusBar } from "expo-status-bar";
+// import { StyleSheet, View } from "react-native";
 
-const STEPS_GOAL = 10_000;
+// import Health from "./src/screens/Health/Health";
 
-export default function App() {
-  const [date, setDate] = useState(new Date());
-  const { steps, flights, distance } = useHealthData(date);
+// export default function App() {
+//   return (
+//     <View style={styles.container}>
+//       <Health />
+//       <StatusBar style="auto" />
+//     </View>
+//   );
+// }
 
-  const changeDate = (numDays: number) => {
-    const currentDate = new Date(date); // Create a copy of the current date
-    // Update the date by adding/subtracting the number of days
-    currentDate.setDate(currentDate.getDate() + numDays);
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "black",
+//     justifyContent: "center",
+//     padding: 12,
+//   },
+// });
 
-    setDate(currentDate); // Update the state variable
-  };
+
+import React, {useCallback, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import RootLayout from './src/navigation/RootLayout';
+import {save, get} from './src/storage/asyncStorage';
+import {RecoilRoot, useSetRecoilState} from 'recoil';
+import {themeValueState} from './src/storage/themeValueStorage';
+
+const App = () => {
+  const setThemeValue = useSetRecoilState(themeValueState);
+
+  const setAppTheme = useCallback(async () => {
+    const theme = await get('Theme');
+    if (theme) {
+      save('Theme', theme);
+      save('IsDefault', true);
+      setThemeValue(theme);
+    }
+  }, [setThemeValue]);
+
+  useEffect(() => {
+    setAppTheme();
+  }, [setAppTheme]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.datePicker}>
-        <AntDesign
-          onPress={() => changeDate(-1)}
-          name="left"
-          size={20}
-          color="#C3FF53"
-        />
-        <Text style={styles.date}>{date.toDateString()}</Text>
-
-        <AntDesign
-          onPress={() => changeDate(1)}
-          name="right"
-          size={20}
-          color="#C3FF53"
-        />
-      </View>
-
-      <RingProgress
-        radius={150}
-        strokeWidth={50}
-        progress={steps / STEPS_GOAL}
-      />
-
-      <View style={styles.values}>
-        <Value label="Steps" value={steps.toString()} />
-        <Value label="Distance" value={`${(distance / 1000).toFixed(2)} km`} />
-        <Value label="Flights Climbed" value={flights.toString()} />
-      </View>
-
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <RootLayout />
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    padding: 12,
-  },
-  values: {
-    flexDirection: 'row',
-    gap: 25,
-    flexWrap: 'wrap',
-    marginTop: 100,
-  },
-  datePicker: {
-    alignItems: 'center',
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  date: {
-    color: 'white',
-    fontWeight: '500',
-    fontSize: 20,
-    marginHorizontal: 20,
-  },
-});
+const withRecoilRoot = (Component: React.FC) => {
+  const WrappedComponent: React.FC = () => {
+    return (
+      <RecoilRoot>
+        <Component />
+      </RecoilRoot>
+    );
+  };
+
+  WrappedComponent.displayName = Component.displayName || Component.name;
+  return WrappedComponent;
+};
+
+export default withRecoilRoot(App);
