@@ -5,7 +5,9 @@ const commonColor = {
 
 const light = {
   gray: '#A0A0A0',
-  themeColor: '#F5F5F5',
+  themeColor: '#FFFFFF',
+  themeDisplay: '#000000',
+  themeDisplay2: '#000000',
   sky: '#87CEEB',
   text: '#ECEDEE',
   tint: '#0a7ea4',
@@ -17,6 +19,8 @@ const light = {
 const dark = {
   gray: '#777777',
   themeColor: '#000000',
+  themeDisplay: "#FFFFFF",
+  themeDisplay2: "#FFFFFF",
   sky: '#1E1E1E',
   text: '#ECEDEE',
   tint: '#fff',

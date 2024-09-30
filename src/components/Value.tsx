@@ -1,29 +1,38 @@
 import { StyleSheet, Text, View } from "react-native";
+import { ThemeKey } from "../hooks/useAppTheme";
+import { useRecoilValue } from "recoil";
+import { themeValueState } from "../storage/themeValueStorage";
+import { Colors } from "../constants/Colors";
 
 type ValueProps = {
   label: string;
   value: string;
-}
-const Value = ({label, value}: ValueProps) => (
-  <View style={styles.valueContainer}>
-    <Text style={styles.label}>{label}</Text>
-    <Text style={styles.value}>{value}</Text>
-  </View>
-);
+};
+const Value = ({ label, value }: ValueProps) => {
+  const themeValue = useRecoilValue(themeValueState);
+  const styles = styling(themeValue);
+  return (
+    <View style={styles.valueContainer}>
+      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.value}>{value}</Text>
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({
-  valueContainer: {
-    marginVertical: 10,
-  },
-  label: {
-    color: "#FFF",
-    fontSize: 20,
-  },
-  value: {
-    fontSize: 35,
-    color: "#AFB3BE",
-    fontWeight: "500",
-  },
-});
+const styling = (theme: ThemeKey) =>
+  StyleSheet.create({
+    valueContainer: {
+      marginVertical: 10,
+    },
+    label: {
+      color: Colors[theme]?.themeDisplay || Colors.light.themeDisplay,
+      fontSize: 20,
+    },
+    value: {
+      fontSize: 35,
+      color: Colors[theme]?.themeDisplay2 || Colors.light.themeDisplay2,
+      fontWeight: "500",
+    },
+  });
 
 export default Value;

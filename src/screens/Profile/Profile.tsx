@@ -12,7 +12,7 @@ import {themeValueState} from '../../storage/themeValueStorage';
 import {ThemeKey} from '../../hooks/useAppTheme';
 import {useAppTheme} from '../../hooks/useAppTheme';
 
-const Home: React.FC = () => {
+const Profile: React.FC = () => {
   const themeValue = useRecoilValue(themeValueState);
   const {setAppTheme} = useAppTheme();
   const styles = styling(themeValue);
@@ -75,4 +75,4 @@ const styling = (theme: ThemeKey) =>
     },
   });
 
-export default Home;
+export default Profile;
