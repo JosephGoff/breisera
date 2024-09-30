@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Value from "../../components/Value";
 import RingProgress from "../../components/RingProgress";
 import { useState } from "react";
@@ -8,6 +8,8 @@ import { useRecoilValue } from "recoil";
 import { themeValueState } from "../../storage/themeValueStorage";
 import { ThemeKey } from "../../hooks/useAppTheme";
 import { Colors } from "../../constants/Colors";
+import Header from "../../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const STEPS_GOAL = 10_000;
 
@@ -26,7 +28,9 @@ export function Health() {
   const styles = styling(themeValue);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Header />
+      <ScrollView>
       <View style={styles.datePicker}>
         <AntDesign
           onPress={() => changeDate(-1)}
@@ -48,6 +52,9 @@ export function Health() {
         radius={150}
         strokeWidth={50}
         progress={steps / STEPS_GOAL}
+        ringColor={'#EE0F55'}
+        ringFillColor={'#EE0F55'}
+        showArrow={true}
       />
 
       <View style={styles.values}>
@@ -55,7 +62,8 @@ export function Health() {
         <Value label="Distance" value={`${(distance / 1000).toFixed(2)} km`} />
         <Value label="Flights Climbed" value={flights.toString()} />
       </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -64,14 +72,14 @@ const styling = (theme: ThemeKey) =>
     container: {
       flex: 1,
       backgroundColor: Colors[theme]?.themeColor || Colors.light.themeColor,
-      justifyContent: "center",
       padding: 12,
     },
     values: {
       flexDirection: "row",
       gap: 25,
       flexWrap: "wrap",
-      marginTop: 100,
+      marginTop: 30,
+      marginHorizontal: 11,
       maxWidth: "70%",
     },
     datePicker: {

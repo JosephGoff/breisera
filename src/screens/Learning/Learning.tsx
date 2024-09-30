@@ -4,11 +4,15 @@ import { Colors } from "../../constants/Colors";
 import { ThemeKey } from "../../hooks/useAppTheme";
 import { useRecoilValue } from "recoil";
 import { themeValueState } from "../../storage/themeValueStorage";
+import Header from "../../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Learning = () => {
   const themeValue = useRecoilValue(themeValueState);
   const styles = styling(themeValue);
-  return <View style={styles.container}></View>;
+  return <SafeAreaView style={styles.container}>
+    <Header/>
+  </SafeAreaView>;
 };
 
 const styling = (theme: ThemeKey) =>
@@ -16,8 +20,6 @@ const styling = (theme: ThemeKey) =>
     container: {
       flex: 1,
       backgroundColor: Colors[theme]?.themeColor || Colors.light.themeColor,
-      justifyContent: "center",
-      padding: 12,
     },
   });
 

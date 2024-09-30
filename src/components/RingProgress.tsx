@@ -7,6 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
+import { Colors, commonColor } from '../constants/Colors';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -14,14 +15,18 @@ type RingProgressProps = {
   radius?: number;
   strokeWidth?: number;
   progress: number;
+  ringColor: string;
+  ringFillColor: string;
+  showArrow: boolean;
 };
-
-const color = '#EE0F55';
 
 const RingProgress = ({
   radius = 100,
   strokeWidth = 35,
   progress,
+  ringColor,
+  ringFillColor,
+  showArrow = false
 }: RingProgressProps) => {
   const innerRadius = radius - strokeWidth / 2;
   const circumference = 2 * Math.PI * innerRadius;
@@ -43,7 +48,6 @@ const RingProgress = ({
     originX: radius,
     originY: radius,
     strokeWidth: strokeWidth,
-    stroke: color,
     strokeLinecap: 'round',
     rotation: '-90',
     fill: 'transparent',
@@ -55,13 +59,14 @@ const RingProgress = ({
         width: radius * 2,
         height: radius * 2,
         alignSelf: 'center',
+        position: "relative"
       }}
     >
       <SVG>
-        <Circle {...circleDefaultProps} opacity={0.2} />
-        <AnimatedCircle animatedProps={animatedProps} {...circleDefaultProps} />
+        <Circle {...circleDefaultProps} stroke={ringColor} opacity={0.2} />
+        {progress !== 0 && <AnimatedCircle animatedProps={animatedProps} stroke={ringFillColor} {...circleDefaultProps} />}
       </SVG>
-      <AntDesign
+      {showArrow && progress !== 0 && <AntDesign
         name="arrowright"
         size={strokeWidth * 0.8}
         color="black"
@@ -70,7 +75,8 @@ const RingProgress = ({
           alignSelf: 'center',
           top: strokeWidth * 0.1,
         }}
-      />
+      />}
+      {progress === 0 && <View style={{backgroundColor: ringFillColor, height: strokeWidth, width: 1, display: "flex", alignSelf: "center", position: "absolute", top: 0}}></View>}
     </View>
   );
 };

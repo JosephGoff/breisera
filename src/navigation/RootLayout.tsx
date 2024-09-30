@@ -6,44 +6,147 @@ import Learning from "../screens/Learning/Learning";
 import Progress from "../screens/Progress/Progress";
 import Habits from "../screens/Habits/Habits";
 import Profile from "../screens/Profile/Profile";
+import { useRecoilValue } from "recoil";
+import { themeValueState } from "../storage/themeValueStorage";
+import { Colors, commonColor } from "../constants/Colors";
+import RingProgress from "../components/RingProgress";
+import { dayStatusState } from "../storage/dayStatusStorage";
 
 const Tab = createBottomTabNavigator();
 
-const HealthScreen: React.FC = () => {
-  return (
-    <View>
-      <Text>This is the Health Screen</Text>
-    </View>
-  );
-};
-
 const RootLayout = () => {
+  const themeValue = useRecoilValue(themeValueState);
+  const dayStatus = useRecoilValue(dayStatusState);
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          minHeight: 60,
+          paddingTop: 10,
+          backgroundColor:
+            Colors[themeValue]?.themeColor || Colors.light.themeColor,
+          paddingHorizontal: 9,
+        },
+        tabBarLabelStyle: {
+          marginBottom: -9,
+          paddingTop: 5,
+          fontSize: 13,
+          fontWeight: 400,
+        },
+        tabBarActiveTintColor:
+          Colors[themeValue]?.themeDisplay || Colors.light.themeDisplay,
+      }}
+    >
       <Tab.Screen
         name="Health"
         component={Health}
-        options={{ title: "Health", headerShown: false }}
-      />
-      <Tab.Screen
-        name="Learning"
-        component={Learning}
-        options={{ title: "Learning", headerShown: false }}
-      />
-      <Tab.Screen
-        name="Progress"
-        component={Progress}
-        options={{ title: "Progress", headerShown: false }}
+        options={{
+          title: "Health",
+          headerShown: false,
+          tabBarIcon: () => (
+            <RingProgress
+              radius={14}
+              strokeWidth={5}
+              progress={dayStatus.health}
+              ringColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              ringFillColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              showArrow={false}
+            />
+          ),
+        }}
       />
       <Tab.Screen
         name="Habits"
         component={Habits}
-        options={{ title: "Habits", headerShown: false }}
+        options={{
+          title: "Habits",
+          headerShown: false,
+          tabBarIcon: () => (
+            <RingProgress
+              radius={14}
+              strokeWidth={5}
+              progress={dayStatus.habits}
+              ringColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              ringFillColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              showArrow={false}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Progress"
+        component={Progress}
+        options={{
+          title: "Progress",
+          headerShown: false,
+          tabBarIcon: () => (
+            <RingProgress
+              radius={14}
+              strokeWidth={5}
+              progress={dayStatus.progress}
+              ringColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              ringFillColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              showArrow={false}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Learning"
+        component={Learning}
+        options={{
+          title: "Learning",
+          headerShown: false,
+          tabBarIcon: () => (
+            <RingProgress
+              radius={14}
+              strokeWidth={5}
+              progress={dayStatus.learning}
+              ringColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              ringFillColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              showArrow={false}
+            />
+          ),
+        }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{ title: "Profile", headerShown: false }}
+        options={{
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: () => (
+            <RingProgress
+              radius={14}
+              strokeWidth={5}
+              progress={dayStatus.all}
+              ringColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              ringFillColor={
+                Colors[themeValue]?.successGreen || Colors.light.successGreen
+              }
+              showArrow={false}
+            />
+          ),
+        }}
       />
     </Tab.Navigator>
   );

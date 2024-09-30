@@ -1,11 +1,13 @@
-const commonColor = {
+export const commonColor = {
   commonWhite: '#FFFFFF',
   commonBlack: '#000000',
 };
 
 const light = {
-  gray: '#A0A0A0',
+  successGreen: '#41C755',
   themeColor: '#FFFFFF',
+  themeColorSoft: '#DDDDDD',
+  themeColorSoft2: '#eeeeee',
   themeDisplay: '#000000',
   themeDisplay2: '#000000',
   sky: '#87CEEB',
@@ -17,8 +19,10 @@ const light = {
   ...commonColor,
 };
 const dark = {
-  gray: '#777777',
+  successGreen: '#60FF77',
   themeColor: '#000000',
+  themeColorSoft: '#222222',
+  themeColorSoft2: '#111111',
   themeDisplay: "#FFFFFF",
   themeDisplay2: "#FFFFFF",
   sky: '#1E1E1E',
