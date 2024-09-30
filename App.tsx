@@ -5,8 +5,12 @@ import { save, get } from "./src/storage/asyncStorage";
 import { RecoilRoot, useSetRecoilState } from "recoil";
 import { themeValueState } from "./src/storage/themeValueStorage";
 import { dayStatusState } from "./src/storage/dayStatusStorage";
+import useTrackDayStatus from "./src/hooks/useTrackDayStatus";
 
 const App = () => {
+  // Tracking data
+  useTrackDayStatus();
+
   // Set the theme state from async storage
   const setThemeValue = useSetRecoilState(themeValueState);
   const setAppTheme = useCallback(async () => {
